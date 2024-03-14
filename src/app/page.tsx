@@ -1,16 +1,11 @@
 import Image from "next/image";
 import Navbar from "./components/Navbar";
-import Body from "./components/Body";
-
-const AppLayout = () => {
-  return (
-    <>
-      <Navbar />
-      <Body />
-    </>
-  );
-};
+import Hero from "./components/Hero";
 
 export default function Home() {
-  return <Navbar />;
+  return (
+    <div className="bg-white ">
+      <Hero />
+    </div>
+  );
 }
