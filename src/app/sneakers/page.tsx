@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import SneakerCard from "../components/SneakerCard";
 import { json } from "stream/consumers";
+import Link from "next/link";
 
 const page = () => {
   const [sneakerList, setSneakerList] = useState<any[]>([]);
@@ -27,13 +28,14 @@ const page = () => {
       {/*  SNEAKER CONTAINER */}
       <div className="py-24  h-20 w-10/12 mx-auto  flex flex-wrap justify-between ">
         {sneakerList.map((sneaker) => (
-          <SneakerCard
-            key={sneaker?.id}
-            main_picture_url={sneaker?.main_picture_url}
-            brand_name={sneaker?.brand_name}
-            name={sneaker?.name}
-            retail_price_cents={sneaker?.retail_price_cents}
-          />
+          <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
+            <SneakerCard
+              main_picture_url={sneaker?.main_picture_url}
+              brand_name={sneaker?.brand_name}
+              name={sneaker?.name}
+              retail_price_cents={sneaker?.retail_price_cents}
+            />
+          </Link>
         ))}
       </div>
     </div>

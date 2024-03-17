@@ -1,22 +1,25 @@
 import React from "react";
 
-type propType = {
+interface sneakerProp {
   brand_name: string;
   main_picture_url: string;
   name: string;
   retail_price_cents: number;
-};
+}
 
 const SneakerCard = ({
   brand_name,
   main_picture_url,
   name,
   retail_price_cents,
-}: propType) => {
+}: sneakerProp) => {
   return (
-    <div className="shadow-md  shadow-[#BECCD0]  rounded-lg  border border-[#5A5E62] border-opacity-40 mx bg-[#201d1d] w-[24rem] p-4 mb-8 ">
-      <div className="bg-[#5A5E62] ">
-        <img className="w-72 " src={main_picture_url}></img>
+    <div className="shadow-   rounded-md   w-[24rem] p-4 mb-8 ">
+      <div className="bg-gray-200  ">
+        <img
+          className="w-72 hover:-rotate-45 transition-all duration-500 "
+          src={main_picture_url}
+        ></img>
       </div>
       {/*  details */}
       <div className="font-bold ">

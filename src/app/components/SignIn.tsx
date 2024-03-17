@@ -1,6 +1,10 @@
-import React from "react";
+"use client";
 
-const page = () => {
+const SignInComponent = () => {
+  const handler = () => {
+    console.log("hy");
+  };
+
   return (
     <div className="text-black bg-gradient-to-br from-slate-100 to-gray-200 w-full flex items-center h-screen">
       <div className="w-5/12 mx-auto py-12 shadow-lg bg-white rounded-lg">
@@ -15,7 +19,10 @@ const page = () => {
             className="w-6/12 py-2  border-b-2 "
           ></input>
 
-          <button className="mt-4 bg-orange-400 py-3 rounded-md text-white w-6/12  ">
+          <button
+            onClick={handler}
+            className="mt-4 bg-orange-400 py-3 rounded-md text-white w-6/12  "
+          >
             Sign In
           </button>
         </form>
@@ -24,4 +31,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SignInComponent;
