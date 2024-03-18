@@ -1,33 +1,23 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-
 import Navbar from "../components/Navbar";
 import SneakerCard from "../components/SneakerCard";
-import { json } from "stream/consumers";
 import Link from "next/link";
+import axios from "axios";
 
-const page = () => {
-  const [sneakerList, setSneakerList] = useState<any[]>([]);
-
-  // api call
+const page = async () => {
+  // GET SNEAKERS API CALL
   const getSneakers = async () => {
-    const data = await fetch("http://localhost:3000/api/v1/sneakers");
-    const json = await data.json();
-    console.log("sneaker list", json?.data?.sneakers);
-    setSneakerList(json?.data?.sneakers);
+    const data = await axios.get("http://localhost:3000/api/v1/sneakers");
+    return data?.data?.data?.sneakers;
   };
 
-  useEffect(() => {
-    getSneakers();
-  }, []);
+  const sneakerList = await getSneakers();
 
   return (
-    <div className="  ">
+    <div>
       <Navbar />
       {/*  SNEAKER CONTAINER */}
       <div className="py-24  h-20 w-10/12 mx-auto  flex flex-wrap justify-between ">
-        {sneakerList.map((sneaker) => (
+        {sneakerList.map((sneaker: any) => (
           <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
             <SneakerCard
               main_picture_url={sneaker?.main_picture_url}

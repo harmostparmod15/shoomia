@@ -30,7 +30,8 @@ const SneakerDetails = ({
   designer,
   upper_material,
 }: sneakerDetailsProps) => {
-  story_html = story_html.replace(/(<([^>]+)>)/gi, "");
+  //   REMOVING P TAG FROM PRODUCT DETAILS
+  if (story_html) story_html = story_html.replace(/(<([^>]+)>)/gi, "");
 
   // EXTRACTING SIZE FROM 6 TO 10
   size_range = size_range.filter((size) => size < 10 && size > 6).sort();
@@ -65,10 +66,13 @@ const SneakerDetails = ({
         {/* ACCORDIONS  */}
         <div className=" my-4 flex flex-col gap-4 ">
           {/*  ABOUT PRODUCT */}
-          <div>
-            <h1 className="text-xl font-bold py-4">ABOUT PRODUCT</h1>
-            <p className="  leading-8 text-xl ">{story_html}</p>
-          </div>
+          {story_html && (
+            <div>
+              <h1 className="text-xl font-bold py-4">ABOUT PRODUCT</h1>
+              <p className="  leading-8 text-xl ">{story_html}</p>
+            </div>
+          )}
+
           {/* PRODUCT DETAILS */}
           <div>
             <h1 className="text-xl font-bold py-4">PRODUCT DETAILS</h1>
