@@ -16,7 +16,7 @@ const page = async () => {
     <div>
       <Navbar />
       {/*  SNEAKER CONTAINER */}
-      <div className="py-24  h-20 w-10/12 mx-auto  flex flex-wrap justify-between ">
+      <div className="py-24  h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
         {sneakerList.map((sneaker: any) => (
           <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
             <SneakerCard

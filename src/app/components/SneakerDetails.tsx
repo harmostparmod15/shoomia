@@ -37,14 +37,14 @@ const SneakerDetails = ({
   size_range = size_range.filter((size) => size < 10 && size > 6).sort();
 
   return (
-    <div className=" w-full flex ">
+    <div className=" w-10/12 mx-auto flex justify-between  ">
       {/*  right side sneaker image */}
-      <div className="w-7/12 ">
+      <div className="w-7/12 bg-slate-200 my-12 ">
         <img className="w-full " src={original_picture_url}></img>
       </div>
 
       {/*  left side sneaker detials */}
-      <div className="w-5/12  p-12">
+      <div className="w-5/12 border my-12 p-12">
         <h1 className="text-gray-400 text-xl font-bold ">{brand_name}</h1>
         <h1 className="py-4 text-4xl font-bold ">{name}</h1>
         <h1 className="text-xl font-bold">${retail_price_cents / 100}</h1>

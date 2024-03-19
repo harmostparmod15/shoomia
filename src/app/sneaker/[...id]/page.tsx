@@ -1,5 +1,6 @@
 import Navbar from "@/app/components/Navbar";
 import SneakerDetails from "@/app/components/SneakerDetails";
+import SneakerRecommendation from "@/app/components/SneakerRecommendation";
 import axios from "axios";
 
 export default async function Page({ params }: { params: { id: number[] } }) {
@@ -20,6 +21,7 @@ export default async function Page({ params }: { params: { id: number[] } }) {
     <>
       <Navbar />
       <SneakerDetails {...snkrObj.data[0]} />
+      <SneakerRecommendation />
     </>
   );
 }
