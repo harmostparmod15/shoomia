@@ -14,7 +14,7 @@ const SneakerCard = ({
   retail_price_cents,
 }: sneakerProp) => {
   return (
-    <div className="    rounded-md   w-[24rem] -4 mb-8 ">
+    <div className="    rounded-md   w-[24rem]  mb-8 ">
       <div className="bg-gray-200  w-full ">
         <img
           className="w-72 hover:-rotate-45 transition-all duration-500 "
