@@ -4,6 +4,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
+    showCartPage: false,
   },
   reducers: {
     addItem: (state, action) => {
@@ -12,8 +13,11 @@ const cartSlice = createSlice({
     removeItem: (state, action) => {
       state.items.pop();
     },
+    toggleCartPage: (state, action) => {
+      state.showCartPage = action.payload;
+    },
   },
 });
 
 export default cartSlice.reducer;
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, toggleCartPage } = cartSlice.actions;

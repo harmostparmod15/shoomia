@@ -6,8 +6,13 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
+import { Provider, useSelector } from "react-redux";
+import Cart from "../components/Cart";
+import appStore from "../utils/store";
 
-const page = () => {
+const Page = () => {
+  const showCartPage = useSelector((store) => store?.cart?.showCartPage);
+
   // STATES
   const [sneakerList, setSneakerList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -80,9 +85,24 @@ const page = () => {
           ))}
           {loading && <Loader />}
         </div>
+        {/*  CART PAGE */}
+        {showCartPage && <Cart />}
+
+        {/*  GRAY OVERLAY */}
+        {showCartPage && (
+          <div className="z-10 absolute top-0 left-0 bg-black bg-opacity-50 h-screen w-screen  "></div>
+        )}
       </div>
     </>
   );
 };
 
-export default page;
+const SneakerListing = () => {
+  return (
+    <Provider store={appStore}>
+      <Page />
+    </Provider>
+  );
+};
+
+export default SneakerListing;

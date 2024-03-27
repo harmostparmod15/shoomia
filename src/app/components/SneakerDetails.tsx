@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addItem } from "../utils/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, toggleCartPage } from "../utils/cartSlice";
 import { useRouter } from "next/navigation";
 import router from "next/router";
 import Error from "./Error";
+import Cart from "./Cart";
 
 interface sneakerDetailsProps {
   original_picture_url: string;
@@ -63,9 +64,13 @@ const SneakerDetails = ({
   const dispatch = useDispatch();
   const router = useRouter();
 
+  // selector
+  const showCart = useSelector((store) => store?.cart?.showCartPage);
+
   // STATES
   const [userShoeSize, setUserShoeSize] = useState(0);
   const [showErrorPage, setShowErrorPage] = useState(false);
+  const [showCartPage, setShowCartPage] = useState(false);
 
   //   REMOVING P TAG FROM PRODUCT DETAILS
   if (story_html) story_html = story_html.replace(/(<([^>]+)>)/gi, "");
@@ -85,94 +90,111 @@ const SneakerDetails = ({
         dispatch(
           addItem({
             original_picture_url,
+            brand_name,
             name,
             retail_price_cents,
             userShoeSize,
           })
         );
-        router.push("/cart");
+        dispatch(toggleCartPage(true));
       }
     } catch (error) {}
   };
 
   return (
-    <div className="relative w-10/12 mx-auto flex justify-between   ">
-      {showErrorPage && (
-        <Error
-          setShowErroPage={() => setShowErrorPage(false)}
-          appName="please select shoe size"
-        />
-      )}
-      {/*  right side sneaker image */}
-      <div className="w-7/12 bg-slate-200 my-12 ">
-        <img className="w-full " src={original_picture_url}></img>
-      </div>
-
-      {/*  left side sneaker detials */}
-      <div className="w-5/12 border my-12 p-12">
-        <h1 className="text-gray-400 text-xl font-bold ">{brand_name}</h1>
-        <h1 className="py-4 text-4xl font-bold ">{name}</h1>
-        <h1 className="text-xl font-bold">${retail_price_cents / 100}</h1>
-        {/*  SHOE SIZE */}
-        <div className="">
-          <h1 className="text-xl font-bold opacity-80 ">Shoe Size UK</h1>
-          {/*  SIZE BOXES */}
-          <div className="flex gap-2 flex-wrap my-4 ">
-            {size_range.map((size, i) => (
-              <ShoeSize
-                size={size}
-                index={i}
-                key={size}
-                setUserShoeSize={() => setUserShoeSize(size)}
-              />
-            ))}
-          </div>
+    <div className="relative">
+      {/*  SNEAKER DETAIL */}
+      <div
+        className={
+          "relative w-10/12 mx-auto flex justify-between  " +
+          (showCartPage && "grayscale ")
+        }
+      >
+        {showErrorPage && (
+          <Error
+            setShowErroPage={() => setShowErrorPage(false)}
+            appName="please select shoe size"
+          />
+        )}
+        {/*  right side sneaker image */}
+        <div className="w-7/12 bg-slate-200 my-12 ">
+          <img className="w-full " src={original_picture_url}></img>
         </div>
 
-        {/*  ADD TO CART */}
-        <button
-          onClick={addItemtToCart}
-          className="w-10/12 mx-auto bg-black text-white py-4 px-4  "
-        >
-          Add to cart
-        </button>
-        {/* ACCORDIONS  */}
-        <div className=" my-4 flex flex-col gap-4 ">
-          {/*  ABOUT PRODUCT */}
-          {story_html && (
-            <div>
-              <h1 className="text-xl font-bold py-4">ABOUT PRODUCT</h1>
-              <p className="  leading-8 text-xl ">{story_html}</p>
+        {/*  left side sneaker detials */}
+        <div className="w-5/12 border my-12 p-12">
+          <h1 className="text-gray-400 text-xl font-bold ">{brand_name}</h1>
+          <h1 className="py-4 text-4xl font-bold ">{name}</h1>
+          <h1 className="text-xl font-bold">${retail_price_cents / 100}</h1>
+          {/*  SHOE SIZE */}
+          <div className="">
+            <h1 className="text-xl font-bold opacity-80 ">Shoe Size UK</h1>
+            {/*  SIZE BOXES */}
+            <div className="flex gap-2 flex-wrap my-4 ">
+              {size_range.map((size, i) => (
+                <ShoeSize
+                  size={size}
+                  index={i}
+                  key={size}
+                  setUserShoeSize={() => setUserShoeSize(size)}
+                />
+              ))}
             </div>
-          )}
+          </div>
 
-          {/* PRODUCT DETAILS */}
-          <div>
-            <h1 className="text-xl font-bold py-4">PRODUCT DETAILS</h1>
-            <h1>
-              <span className="text-lg font-bold opacity-70 ">
-                Release year :
-              </span>{" "}
-              {release_year}
-            </h1>
-            <h1>
-              <span className="text-lg font-bold opacity-70 ">
-                {" "}
-                Designer :{" "}
-              </span>
-              {designer}
-            </h1>
-            <h1>
-              <span className="text-lg font-bold opacity-70 ">
-                {" "}
-                Upper material :{" "}
-              </span>
+          {/*  ADD TO CART */}
+          <button
+            onClick={addItemtToCart}
+            className="w-10/12 mx-auto bg-black text-white py-4 px-4  "
+          >
+            Add to cart
+          </button>
+          {/* ACCORDIONS  */}
+          <div className=" my-4 flex flex-col gap-4 ">
+            {/*  ABOUT PRODUCT */}
+            {story_html && (
+              <div>
+                <h1 className="text-xl font-bold py-4">ABOUT PRODUCT</h1>
+                <p className="  leading-8 text-xl ">{story_html}</p>
+              </div>
+            )}
 
-              {upper_material}
-            </h1>
+            {/* PRODUCT DETAILS */}
+            <div>
+              <h1 className="text-xl font-bold py-4">PRODUCT DETAILS</h1>
+              <h1>
+                <span className="text-lg font-bold opacity-70 ">
+                  Release year :
+                </span>{" "}
+                {release_year}
+              </h1>
+              <h1>
+                <span className="text-lg font-bold opacity-70 ">
+                  {" "}
+                  Designer :{" "}
+                </span>
+                {designer}
+              </h1>
+              <h1>
+                <span className="text-lg font-bold opacity-70 ">
+                  {" "}
+                  Upper material :{" "}
+                </span>
+
+                {upper_material}
+              </h1>
+            </div>
           </div>
         </div>
       </div>
+
+      {/*  CART PAGE */}
+      {showCart && <Cart />}
+
+      {/*  GRAY OVERLAY */}
+      {showCart && (
+        <div className="z-10 absolute top-0 left-0 bg-black bg-opacity-50 h-screen w-screen  "></div>
+      )}
     </div>
   );
 };
