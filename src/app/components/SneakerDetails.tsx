@@ -1,4 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
+import { useRouter } from "next/navigation";
+import router from "next/router";
+import Error from "./Error";
 
 interface sneakerDetailsProps {
   original_picture_url: string;
@@ -13,9 +20,32 @@ interface sneakerDetailsProps {
 }
 
 //  SHOE SIZE BOXES COMPONENT
-const ShoeSize = ({ size }: { size: number }) => {
+const ShoeSize = ({
+  size,
+  index,
+  setUserShoeSize,
+}: {
+  size: number;
+  index: number;
+  setUserShoeSize: () => void;
+}) => {
+  // handle user size
+  const handleUserSize = (index: number) => {
+    setUserShoeSize();
+    const sizeboxes = Array.from(document.querySelectorAll(".size"));
+    sizeboxes.forEach((box, i) =>
+      index === i
+        ? box.classList.add("bg-black", "text-white")
+        : box.classList.remove("bg-black", "text-white")
+    );
+  };
   return (
-    <div className=" border border-black  w-24  text-center  py-2 ">{size}</div>
+    <div
+      onClick={() => handleUserSize(index)}
+      className="size hover:cursor-pointer  transition-all duration-300     border border-black  w-24  text-center  py-2 "
+    >
+      {size}
+    </div>
   );
 };
 
@@ -30,14 +60,49 @@ const SneakerDetails = ({
   designer,
   upper_material,
 }: sneakerDetailsProps) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // STATES
+  const [userShoeSize, setUserShoeSize] = useState(0);
+  const [showErrorPage, setShowErrorPage] = useState(false);
+
   //   REMOVING P TAG FROM PRODUCT DETAILS
   if (story_html) story_html = story_html.replace(/(<([^>]+)>)/gi, "");
 
   // EXTRACTING SIZE FROM 6 TO 10
   size_range = size_range.filter((size) => size < 10 && size > 6).sort();
 
+  // ADD ITEM TO CART ACTION
+  const addItemtToCart = () => {
+    console.log("fn clicked");
+    console.log("user shoe size", userShoeSize);
+    try {
+      if (userShoeSize === 0) {
+        console.log("error");
+        setShowErrorPage(true);
+      } else {
+        dispatch(
+          addItem({
+            original_picture_url,
+            name,
+            retail_price_cents,
+            userShoeSize,
+          })
+        );
+        router.push("/cart");
+      }
+    } catch (error) {}
+  };
+
   return (
-    <div className=" w-10/12 mx-auto flex justify-between  ">
+    <div className="relative w-10/12 mx-auto flex justify-between   ">
+      {showErrorPage && (
+        <Error
+          setShowErroPage={() => setShowErrorPage(false)}
+          appName="please select shoe size"
+        />
+      )}
       {/*  right side sneaker image */}
       <div className="w-7/12 bg-slate-200 my-12 ">
         <img className="w-full " src={original_picture_url}></img>
@@ -53,14 +118,22 @@ const SneakerDetails = ({
           <h1 className="text-xl font-bold opacity-80 ">Shoe Size UK</h1>
           {/*  SIZE BOXES */}
           <div className="flex gap-2 flex-wrap my-4 ">
-            {size_range.map((size) => (
-              <ShoeSize size={size} key={size} />
+            {size_range.map((size, i) => (
+              <ShoeSize
+                size={size}
+                index={i}
+                key={size}
+                setUserShoeSize={() => setUserShoeSize(size)}
+              />
             ))}
           </div>
         </div>
 
         {/*  ADD TO CART */}
-        <button className="w-10/12 mx-auto bg-black text-white py-4 px-4  ">
+        <button
+          onClick={addItemtToCart}
+          className="w-10/12 mx-auto bg-black text-white py-4 px-4  "
+        >
           Add to cart
         </button>
         {/* ACCORDIONS  */}

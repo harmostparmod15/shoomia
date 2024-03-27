@@ -1,7 +1,11 @@
+"use client";
+
 import Navbar from "@/app/components/Navbar";
 import SneakerDetails from "@/app/components/SneakerDetails";
 import SneakerRecommendation from "@/app/components/SneakerRecommendation";
+import appStore from "@/app/utils/store";
 import axios from "axios";
+import { Provider } from "react-redux";
 
 export default async function Page({ params }: { params: { id: number[] } }) {
   // GETTING ID OF SNEAKER
@@ -20,7 +24,9 @@ export default async function Page({ params }: { params: { id: number[] } }) {
   return (
     <>
       <Navbar />
-      <SneakerDetails {...snkrObj.data[0]} />
+      <Provider store={appStore}>
+        <SneakerDetails {...snkrObj.data[0]} />
+      </Provider>
       <SneakerRecommendation />
     </>
   );
