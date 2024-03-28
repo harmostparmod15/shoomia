@@ -7,6 +7,16 @@ interface sneakerProp {
   retail_price_cents: number;
 }
 
+// REVEAL ELEMENTS ON SCROLL
+const revealOnScroll = () => {
+  const allSneakerCards: any = document.querySelectorAll(".sneaker");
+  console.log("all sn cards", allSneakerCards);
+  allSneakerCards.forEach((card: any) => {
+    card?.classList.remove("opacity-0");
+    card?.classList.remove("translate-y-96");
+  });
+};
+
 const SneakerCard = ({
   brand_name,
   main_picture_url,
@@ -14,7 +24,10 @@ const SneakerCard = ({
   retail_price_cents,
 }: sneakerProp) => {
   return (
-    <div className="    rounded-md   w-[24rem]  mb-8 ">
+    <div
+      onLoad={revealOnScroll}
+      className="sneaker  transition-all  duration-[1.5s]   opacity-0 translate-y-96    rounded-md   w-[24rem]  mb-8 "
+    >
       <div className="bg-gray-200  w-full ">
         <img
           className="w-72 hover:-rotate-45 transition-all duration-500 "

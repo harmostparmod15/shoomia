@@ -6,11 +6,16 @@ import appStore from "../utils/store";
 import { toggleCartPage } from "../utils/cartSlice";
 import { useRouter } from "next/navigation";
 
+type StoreObj = {
+  user: string;
+  cart: { items: []; showCartPage: boolean };
+};
+
 const Page = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const cart = useSelector((store) => store?.cart);
-  const userToken = useSelector((store) => store?.user);
+  const cart = useSelector((store: StoreObj) => store?.cart);
+  const userToken = useSelector((store: StoreObj) => store?.user);
 
   const dispatch = useDispatch();
   const router = useRouter();

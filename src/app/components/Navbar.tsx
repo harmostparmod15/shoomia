@@ -9,10 +9,15 @@ import { auth } from "../utils/firebase";
 import { useRouter } from "next/navigation";
 import { removeUser } from "../utils/userSlice";
 
+type StoreObj = {
+  user: string;
+  cart: { items: []; showCartPage: boolean };
+};
+
 const Page = () => {
-  const cartItem = useSelector((store) => store?.cart?.items);
-  const showCart = useSelector((store) => store?.cart?.showCartPage);
-  const userToken = useSelector((store) => store?.user);
+  const cartItem = useSelector((store: StoreObj) => store?.cart?.items);
+  const showCart = useSelector((store: StoreObj) => store?.cart?.showCartPage);
+  const userToken = useSelector((store: StoreObj) => store?.user);
 
   const dispatch = useDispatch();
   const router = useRouter();

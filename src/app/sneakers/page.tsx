@@ -10,15 +10,20 @@ import { Provider, useSelector } from "react-redux";
 import Cart from "../components/Cart";
 import appStore from "../utils/store";
 
+type StoreObj = {
+  user: string;
+  cart: { items: []; showCartPage: boolean };
+};
+
 const Page = () => {
-  const showCartPage = useSelector((store) => store?.cart?.showCartPage);
+  const showCartPage = useSelector(
+    (store: StoreObj) => store?.cart?.showCartPage
+  );
 
   // STATES
-  const [sneakerList, setSneakerList] = useState([]);
+  const [sneakerList, setSneakerList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-
-  console.log("page val", page);
 
   // GET SNEAKERS API CALL
   const getSneakers = async () => {
@@ -26,9 +31,8 @@ const Page = () => {
       const data = await axios.get(
         "http://localhost:3000/api/v1/sneakers?page=" + page
       );
-      console.log(data?.data?.data);
       const resp = data?.data?.data;
-      setSneakerList((prev) => [...prev, ...resp]);
+      setSneakerList((prev: any) => [...prev, ...resp]);
       setLoading(false);
     } catch (error) {
       console.log("axios err", error);
@@ -58,7 +62,6 @@ const Page = () => {
   };
 
   useEffect(() => {
-    console.log("fire once ", page);
     if (page < 14) {
       getSneakers();
     }
@@ -72,7 +75,7 @@ const Page = () => {
       <div className="relative  h-screen ">
         <Navbar />
         {/*  SNEAKER CONTAINER */}
-        <div className="py-24  h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
+        <div className="sneaker-container transition-all  duration-1000  py-24   h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
           {sneakerList.map((sneaker: any) => (
             <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
               <SneakerCard

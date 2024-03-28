@@ -25,10 +25,10 @@ const Body = () => {
           </Link>
         </div>
         {/*  left sdie image */}
-        <div className="w-6/12  h z-20">
+        <div className="hero-image w-6/12  h z-20">
           <Image className="w-full rotate-12 " alt="logo" src={img} />
         </div>
-        {/*  orange bg */}
+        {/*  red bg */}
         <div className="bg-[#CE051C] w-4/12 absolute top-0 right-0 h-screen z-10 "></div>
       </div>
     </div>

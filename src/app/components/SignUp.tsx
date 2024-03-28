@@ -10,38 +10,44 @@ import { useRouter } from "next/navigation";
 
 const Page = () => {
   // REFS
-  const fullName = useRef();
-  const email = useRef();
-  const password = useRef();
+  const fullName = useRef<any>(null);
+  const email = useRef<any>(null);
+  const password = useRef<any>(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
   // FUNCTION TO SIGN UP USER
   const handleSignup = async () => {
+    if (!/\S+@\S+\.\S+/.test(email?.current?.value)) {
+      alert("wrong email");
+      return;
+    }
     // sign up fnc
-    createUserWithEmailAndPassword(
-      auth,
-      email?.current?.value,
-      password?.current?.value
-    )
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log("firebase api  succes ", user);
+    else {
+      createUserWithEmailAndPassword(
+        auth,
+        email?.current?.value,
+        password?.current?.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user: any = userCredential.user;
+          console.log("firebase api  succes ", user);
 
-        dispatch(addUser(user?.accessToken));
-        router.push("/checkout");
+          dispatch(addUser(user?.accessToken));
+          router.push("/checkout");
 
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-        console.log("fire api error", errorCode, errorMessage);
-        // ..
-      });
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage);
+          console.log("fire api error", errorCode, errorMessage);
+          // ..
+        });
+    }
   };
 
   return (

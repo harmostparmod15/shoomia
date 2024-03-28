@@ -13,33 +13,41 @@ const Page = () => {
   const router = useRouter();
 
   // REFS
-  const email = useRef();
-  const password = useRef();
+  const email = useRef<any>(null);
+  const password = useRef<any>(null);
 
   // FUNCTION TO SIGN IN USER
   const handleSignIn = async () => {
+    if (!/\S+@\S+\.\S+/.test(email?.current?.value)) {
+      alert("wrong email");
+      return;
+    }
     // sign up fnc
-    signInWithEmailAndPassword(
-      auth,
-      email?.current?.value,
-      password?.current?.value
-    )
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log("firebase api  succes ", user);
+    else {
+      signInWithEmailAndPassword(
+        auth,
+        email?.current?.value,
+        password?.current?.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user: any = userCredential.user;
+          console.log("firebase api  succes ", user);
 
-        dispatch(addUser(user?.accessToken));
-        router.push("/sneakers");
+          dispatch(addUser(user?.accessToken));
+          router.push("/sneakers");
 
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("fire api error", errorCode, errorMessage);
-        // ..
-      });
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          alert(errorMessage);
+          console.log("fire api error", errorCode, errorMessage);
+          // ..
+        });
+    }
   };
 
   return (
@@ -51,8 +59,8 @@ const Page = () => {
           className="my-8 flex flex-col items-center justify-center gap-8"
         >
           <input
-            ref={email}
             type="email"
+            ref={email}
             placeholder="Email Address"
             className="w-6/12 py-2  border-b-2 "
           ></input>
@@ -62,10 +70,9 @@ const Page = () => {
             placeholder="Password"
             className="w-6/12 py-2  border-b-2 "
           ></input>
-
           <button
             onClick={handleSignIn}
-            className="mt-4 bg-orange-400 py-3 rounded-md text-white w-6/12  "
+            className="mt-4 bg-black py-3 rounded-md text-white w-6/12  "
           >
             Sign In
           </button>

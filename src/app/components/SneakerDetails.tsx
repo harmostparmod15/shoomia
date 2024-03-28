@@ -18,6 +18,11 @@ interface sneakerDetailsProps {
   upper_material: string;
 }
 
+type StoreObj = {
+  user: string;
+  cart: { items: []; showCartPage: boolean };
+};
+
 //  SHOE SIZE BOXES COMPONENT
 const ShoeSize = ({
   size,
@@ -61,12 +66,11 @@ const SneakerDetails = ({
 }: sneakerDetailsProps) => {
   const dispatch = useDispatch();
 
-  const showCart = useSelector((store) => store?.cart?.showCartPage);
+  const showCart = useSelector((store: StoreObj) => store?.cart?.showCartPage);
 
   // STATES
   const [userShoeSize, setUserShoeSize] = useState(0);
   const [showErrorPage, setShowErrorPage] = useState(false);
-  const [showCartPage, setShowCartPage] = useState(false);
 
   //   REMOVING P TAG FROM PRODUCT DETAILS
   if (story_html) story_html = story_html.replace(/(<([^>]+)>)/gi, "");
@@ -101,7 +105,7 @@ const SneakerDetails = ({
       <div
         className={
           "relative w-10/12 mx-auto flex justify-between  " +
-          (showCartPage && "grayscale ")
+          (showCart && "grayscale ")
         }
       >
         {showErrorPage && (
