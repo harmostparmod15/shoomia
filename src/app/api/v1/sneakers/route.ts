@@ -1,12 +1,9 @@
-import { NextResponse } from "next/server";
-
 import { ApiData } from "../../utils/constants";
 
 const pagination = (page: number) => {
   const perPage = 6;
 
   const start = (page - 1) * perPage;
-  console.log("start page ", start);
   const end = page * perPage;
   const responseArr = [];
   for (let i = start; i < end; i++) {

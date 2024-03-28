@@ -1,5 +1,4 @@
 import { ApiData } from "../../utils/constants";
-import { NextApiRequest } from "next";
 
 const filterSneaker = (id: number) => {
   return ApiData.sneakers.filter((sneaker) => sneaker?.id === id);

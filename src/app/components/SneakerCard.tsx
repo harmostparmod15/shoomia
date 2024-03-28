@@ -1,3 +1,4 @@
+"use scroll";
 import React from "react";
 
 interface sneakerProp {
@@ -10,7 +11,6 @@ interface sneakerProp {
 // REVEAL ELEMENTS ON SCROLL
 const revealOnScroll = () => {
   const allSneakerCards: any = document.querySelectorAll(".sneaker");
-  console.log("all sn cards", allSneakerCards);
   allSneakerCards.forEach((card: any) => {
     card?.classList.remove("opacity-0");
     card?.classList.remove("translate-y-96");

@@ -9,6 +9,9 @@ import { auth } from "../utils/firebase";
 import { useRouter } from "next/navigation";
 import { removeUser } from "../utils/userSlice";
 
+import cartImage from "../../../public/images/shopping-bag.png";
+import Image from "next/image";
+
 type StoreObj = {
   user: string;
   cart: { items: []; showCartPage: boolean };
@@ -55,8 +58,11 @@ const Page = () => {
           </Link>
 
           <li>Products</li>
-          <li onClick={handleShowCart} className="cursor-pointer ">
+          <li onClick={handleShowCart} className="cursor-pointer flex ">
             Cart - {cartItem.length}
+            <span>
+              <Image className="w-8" alt="logo" src={cartImage}></Image>
+            </span>
           </li>
           {/*  LOGOUT BTN */}
           {userToken && (

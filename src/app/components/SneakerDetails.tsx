@@ -82,7 +82,6 @@ const SneakerDetails = ({
   const addItemtToCart = () => {
     try {
       if (userShoeSize === 0) {
-        console.log("error");
         setShowErrorPage(true);
       } else {
         dispatch(

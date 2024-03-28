@@ -33,19 +33,13 @@ const Page = () => {
         .then((userCredential) => {
           // Signed up
           const user: any = userCredential.user;
-          console.log("firebase api  succes ", user);
-
           dispatch(addUser(user?.accessToken));
           router.push("/checkout");
-
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           alert(errorMessage);
-          console.log("fire api error", errorCode, errorMessage);
-          // ..
         });
     }
   };
