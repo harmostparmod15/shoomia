@@ -1,26 +1,70 @@
 "use client";
 
-const SignInComponent = () => {
-  const handler = () => {
-    console.log("hy");
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRef } from "react";
+import { auth } from "../utils/firebase";
+import { useRouter } from "next/navigation";
+import { addUser } from "../utils/userSlice";
+import { Provider, useDispatch } from "react-redux";
+import appStore from "../utils/store";
+
+const Page = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // REFS
+  const email = useRef();
+  const password = useRef();
+
+  // FUNCTION TO SIGN IN USER
+  const handleSignIn = async () => {
+    // sign up fnc
+    signInWithEmailAndPassword(
+      auth,
+      email?.current?.value,
+      password?.current?.value
+    )
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log("firebase api  succes ", user);
+
+        dispatch(addUser(user?.accessToken));
+        router.push("/sneakers");
+
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("fire api error", errorCode, errorMessage);
+        // ..
+      });
   };
 
   return (
     <div className="text-black bg-gradient-to-br from-slate-100 to-gray-200 w-full flex items-center h-screen">
       <div className="w-5/12 mx-auto py-12 shadow-lg bg-white rounded-lg">
         <h1 className="text-3xl font-bold text-center  ">Sign In.</h1>
-        <form className="my-8 flex flex-col items-center justify-center gap-8">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="my-8 flex flex-col items-center justify-center gap-8"
+        >
           <input
+            ref={email}
+            type="email"
             placeholder="Email Address"
             className="w-6/12 py-2  border-b-2 "
           ></input>
           <input
+            ref={password}
+            type="password"
             placeholder="Password"
             className="w-6/12 py-2  border-b-2 "
           ></input>
 
           <button
-            onClick={handler}
+            onClick={handleSignIn}
             className="mt-4 bg-orange-400 py-3 rounded-md text-white w-6/12  "
           >
             Sign In
@@ -28,6 +72,14 @@ const SignInComponent = () => {
         </form>
       </div>
     </div>
+  );
+};
+
+const SignInComponent = () => {
+  return (
+    <Provider store={appStore}>
+      <Page />
+    </Provider>
   );
 };
 

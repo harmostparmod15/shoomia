@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, toggleCartPage } from "../utils/cartSlice";
-import { useRouter } from "next/navigation";
-import router from "next/router";
 import Error from "./Error";
 import Cart from "./Cart";
 
@@ -62,9 +60,7 @@ const SneakerDetails = ({
   upper_material,
 }: sneakerDetailsProps) => {
   const dispatch = useDispatch();
-  const router = useRouter();
 
-  // selector
   const showCart = useSelector((store) => store?.cart?.showCartPage);
 
   // STATES
@@ -80,8 +76,6 @@ const SneakerDetails = ({
 
   // ADD ITEM TO CART ACTION
   const addItemtToCart = () => {
-    console.log("fn clicked");
-    console.log("user shoe size", userShoeSize);
     try {
       if (userShoeSize === 0) {
         console.log("error");

@@ -1,36 +1,100 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartItem from "./CartItem";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import appStore from "../utils/store";
 import { toggleCartPage } from "../utils/cartSlice";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const cart = useSelector((store) => store?.cart);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  console.log("prop", cart?.items[0]);
+  const cart = useSelector((store) => store?.cart);
+  const userToken = useSelector((store) => store?.user);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   // HIDE CART PAGE
   const hideCartPage = () => {
     dispatch(toggleCartPage(false));
   };
 
+  // COUNT TOTAL PRICE
+  const priceCalculate = () => {
+    let price = 0;
+    cart?.items?.map((item: any) => (price += item.retail_price_cents / 100));
+    setTotalPrice(price);
+  };
+
+  useEffect(() => {
+    priceCalculate();
+  });
+
+  // HANDLE CHECKOUT
+  const handleCheckOut = () => {
+    if (!userToken) {
+      alert("sign up first");
+      router.push("/signup");
+    } else {
+      router.push("/checkout");
+    }
+  };
+
   return (
-    <div className="cart-page scale-1 transition-all duration-1000  bg-white  z-20  w-4/12 absolute right-0 top-0 flex flex-col h-screen overflow-y-scroll overflow-x-hidden ">
+    <div className="cart-page scale-1 transition-all duration-1000  bg-white  z-20  w-4/12 absolute right-0 top-0 flex flex-col h-screen ">
       {/* CART HEADER */}
-      <div className="flex text-4xl font-bold w-10/12 mx-auto justify-around p-12 border-b-2  ">
+      <div className="flex text-2xl font-bold w-full mx-auto justify-between  p-12 border-b-2  ">
         <h1> Shopping Cart</h1>
-        <h1 className="cursor-pointer " onClick={hideCartPage}>
-          ❌
-        </h1>
+
+        <svg
+          onClick={hideCartPage}
+          className="cursor-pointer  "
+          width="28"
+          height="28"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="1.50136"
+            y1="14.5844"
+            x2="15.0844"
+            y2="1.00135"
+            stroke="black"
+            stroke-width="2"
+          />
+          <line
+            x1="1.70711"
+            y1="1.29289"
+            x2="15.2902"
+            y2="14.876"
+            stroke="black"
+            stroke-width="2"
+          />
+        </svg>
       </div>
 
       {/*  CART ITEMS */}
-      {cart?.items.map((item: any) => (
-        <CartItem {...item} />
-      ))}
+      <div className="overflow-y-scroll overflow-x-hidden ">
+        {cart?.items.map((item: any) => (
+          <CartItem {...item} />
+        ))}
+      </div>
+
+      {/*  CHECKOUT BTN */}
+      <div className=" bottom-0 bg-white text-black absolute flex flex-col gap-4  w-full mx-auto pb-12 px-12 pt-2">
+        <div className="text-xl font-bold  flex justify-between ">
+          <h1>Subtotal</h1>
+          <h1>${totalPrice}</h1>
+        </div>
+        <button
+          onClick={handleCheckOut}
+          className="hover:opacity-60 transition-all duration-300   bg-black text-white py-2 "
+        >
+          CHECKOUT
+        </button>
+      </div>
     </div>
   );
 };
