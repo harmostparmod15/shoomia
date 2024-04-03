@@ -30,7 +30,7 @@ export const Page = () => {
   const getSneakers = async () => {
     try {
       const data = await axios.get(
-        "http://localhost:3000/api/v1/sneakers?page=" + page
+        "https://shoomia.vercel.app:3000/api/v1/sneakers?page=" + page
       );
       const resp = data?.data?.data;
       setSneakerList((prev: any) => [...prev, ...resp]);

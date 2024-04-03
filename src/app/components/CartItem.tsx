@@ -30,7 +30,7 @@ const CartItem = ({
         {/*  PRICE / QUANTITY */}
         <div className="flex justify-between py-4 ">
           <h1 className="font-bold ">${retail_price_cents / 100}</h1>
-          <h1 className="w-6/12 text-center  border border-black"> + 1 -</h1>
+          {/* <h1 className="w-6/12 text-center  border border-black"> + 1 -</h1> */}
         </div>
       </div>
       {/*  CROSS BTN */}

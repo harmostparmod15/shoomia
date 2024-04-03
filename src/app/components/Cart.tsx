@@ -81,7 +81,7 @@ const Page = () => {
       </div>
 
       {/*  CART ITEMS */}
-      <div className="overflow-y-scroll overflow-x-hidden ">
+      <div className="overflow-y-scroll overflow-x-hidden pb-32">
         {cart?.items.map((item: any) => (
           <CartItem {...item} />
         ))}
