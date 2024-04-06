@@ -11,9 +11,15 @@ interface sneakerProp {
 // REVEAL ELEMENTS ON SCROLL
 const revealOnScroll = () => {
   const allSneakerCards: any = document.querySelectorAll(".sneaker");
+  const allSneakerCardImages: any = document.querySelectorAll(".sneaker-image");
+
   allSneakerCards.forEach((card: any) => {
     card?.classList.remove("opacity-0");
     card?.classList.remove("translate-y-96");
+  });
+
+  allSneakerCardImages.forEach((img: any) => {
+    img?.classList.remove("blur-xl");
   });
 };
 
@@ -26,11 +32,11 @@ const SneakerCard = ({
   return (
     <div
       onLoad={revealOnScroll}
-      className="sneaker  transition-all  duration-[1.5s]   opacity-0 translate-y-96    rounded-md   w-[24rem]  mb-8 "
+      className="sneaker  transition-all  duration-700   scale-  opacity-0 translate-y-96    rounded-md   w-[24rem]  mb-8 "
     >
       <div className="bg-gray-200  w-full ">
         <img
-          className="w-72 hover:-rotate-45 transition-all duration-500 "
+          className="sneaker-image blur-xl transition-all duration-[1.2s] w-72   "
           src={main_picture_url}
         ></img>
       </div>

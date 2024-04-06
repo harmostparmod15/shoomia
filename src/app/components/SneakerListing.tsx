@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import SneakerCard from "../components/SneakerCard";
 import Link from "next/link";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loader from "../components/Loader";
 import { Provider, useSelector } from "react-redux";
 import Cart from "../components/Cart";
@@ -30,31 +30,11 @@ export const Page = () => {
   const getSneakers = async () => {
     try {
       const data = await axios.get(
-        "https://shoomia.vercel.app:3000/api/v1/sneakers?page=" + page
+        "https://vercel-shoomia.vercel.app/api/v1/sneakers?page=" + page
       );
       const resp = data?.data?.data;
       setSneakerList((prev: any) => [...prev, ...resp]);
       setLoading(false);
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // HANDLE SCROLL
-  const handleScroll = () => {
-    try {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight
-      ) {
-        setLoading(true);
-        setPage((prev) => prev + 1);
-      }
     } catch (error) {
       alert(error);
     }
@@ -69,12 +49,41 @@ export const Page = () => {
     }
   }, [page]);
 
+  const observerTarget = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // if (page < 14) {
+          console.log(entries[0]);
+          setLoading(true);
+          setPage((prev) => prev + 1);
+          // } else {
+          // setLoading(false);
+          // }
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [observerTarget]);
+
   return (
     <>
-      <div className="relative  h-screen ">
+      <div className="relative    ">
         <Navbar />
         {/*  SNEAKER CONTAINER */}
-        <div className="sneaker-container transition-all  duration-1000  py-24   h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
+        <div className="sneaker-container  transition-all  duration-1000  py-24   h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
           {sneakerList.map((sneaker: any) => (
             <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
               <SneakerCard
@@ -85,7 +94,23 @@ export const Page = () => {
               />
             </Link>
           ))}
-          {loading && <Loader />}
+          {/*    DISPLAYING LOADER IN BOTTOM */}
+          <div
+            ref={observerTarget}
+            className=" justify-center  mx-auto  flex flex-col gap-4"
+          >
+            {/*  showing load more or you v reach end */}
+            {page <= 14 ? (
+              <h1 className=" load-text text-2xl text-gray-400 font-bold opacity-50  ">
+                LOAD MORE ....
+              </h1>
+            ) : (
+              <h1 className="load-text text-2xl text-gray-400 font-bold opacity-50  ">
+                YOU'VE REACHED AT END
+              </h1>
+            )}
+            {loading && <Loader />}
+          </div>
         </div>
         {/*  CART PAGE */}
         {showCartPage && <Cart />}

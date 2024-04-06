@@ -8,7 +8,7 @@ const Body = () => {
   return (
     <div className=" text-black flex justify-center items-center h-screen relative  z-10">
       <div className="w-10/12 mx-auto flex justify-between  ">
-        <h1 className=" absolute top-24 text-xl font-bold">Shoomia</h1>
+        <h1 className=" absolute top-24 text-xl font-bold">Shoomia </h1>
         {/*  right side details */}
         <div className=" w-6/12">
           <h1 className="text-2xl font-bold py-8">NIKE XBA1 </h1>

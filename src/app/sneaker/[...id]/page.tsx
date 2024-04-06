@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: number[] } }) {
   // GET SNEAKER/:id API CALL
   const getSneaker = async (searchQuery: number) => {
     const data = await axios.get(
-      "https://shoomia.vercel.app:3000/api/v1/sneaker?q=" + searchQuery
+      "https://shoomia.vercel.app/api/v1/sneaker?q=" + searchQuery
     );
     return data.data;
   };
