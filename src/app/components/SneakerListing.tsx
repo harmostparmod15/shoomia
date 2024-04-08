@@ -10,6 +10,10 @@ import { Provider, useSelector } from "react-redux";
 import Cart from "../components/Cart";
 import appStore from "../utils/store";
 import error from "next/error";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+
+const persistor = persistStore(appStore);
 
 type StoreObj = {
   user: string;
@@ -127,7 +131,9 @@ export const Page = () => {
 const SneakerListing = () => {
   return (
     <Provider store={appStore}>
-      <Page />
+      <PersistGate persistor={persistor}>
+        <Page />
+      </PersistGate>
     </Provider>
   );
 };

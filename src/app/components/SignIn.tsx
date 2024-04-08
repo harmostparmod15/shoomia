@@ -7,6 +7,10 @@ import { useRouter } from "next/navigation";
 import { addUser } from "../utils/userSlice";
 import { Provider, useDispatch } from "react-redux";
 import appStore from "../utils/store";
+import { PersistGate } from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
+
+const persistor = persistStore(appStore);
 
 const Page = () => {
   const dispatch = useDispatch();
@@ -78,7 +82,9 @@ const Page = () => {
 const SignInComponent = () => {
   return (
     <Provider store={appStore}>
-      <Page />
+      <PersistGate persistor={persistor}>
+        <Page />
+      </PersistGate>
     </Provider>
   );
 };

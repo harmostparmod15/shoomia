@@ -8,7 +8,7 @@ const SneakerRecommendation = async () => {
   // API CALL
   const getRecommendedSneakers = async () => {
     const data = await axios.get(
-      "http://localhost:3000/api/v1/sneaker/recommended"
+      "https://shoomia.vercel.app/api/v1/sneaker/recommended"
     );
     return data?.data?.data;
   };
