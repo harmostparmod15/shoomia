@@ -25,21 +25,29 @@ export const Page = () => {
     (store: StoreObj) => store?.cart?.showCartPage
   );
 
+
   // STATES
   const [sneakerList, setSneakerList] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-
+  const [errPage, setErrPage] = useState(false);
   // GET SNEAKERS API CALL
   const getSneakers = async () => {
     try {
       const data = await axios.get(
         "https://vercel-shoomia.vercel.app/api/v1/sneakers?page=" + page
       );
+      console.log("sn listing ", data)
       const resp = data?.data?.data;
+
       setSneakerList((prev: any) => [...prev, ...resp]);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK") {
+        setErrPage(true);
+
+      }
+      console.log("err ", error.code)
       alert(error);
     }
   };
@@ -86,8 +94,16 @@ export const Page = () => {
     <>
       <div className="relative    ">
         <Navbar />
+        {/* AXIOS ERROR PAGE  */}
+        <div className={`flex w-full h-[100vh] justify-center items-center flex-col gap-4 ${errPage == true ? "flex" : "hidden"}`}>
+          <h1>Error while Loading click here </h1>
+          <a href="/axios-error">
+            <button className="underline font-bold ">Click</button>
+          </a>
+
+        </div>
         {/*  SNEAKER CONTAINER */}
-        <div className="sneaker-container  transition-all  duration-1000  py-24   h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ">
+        <div className={`sneaker-container  transition-all  duration-1000  py-24   h-20 w-10/12 mx-auto gap-4  flex flex-wrap justify-between ${errPage == true ? "hidden" : "flex"}`}>
           {sneakerList.map((sneaker: any) => (
             <Link href={"/sneaker/" + sneaker?.id} key={sneaker?.id}>
               <SneakerCard
