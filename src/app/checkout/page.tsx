@@ -45,6 +45,10 @@ const Page = () => {
       </Link>
 
       <h1 className="text-5xl font-bold text-center py-12 ">CHECKOUT</h1>
+      <p className="text-center text-3xl font-extrabold text-indigo-600 mt-32 animate-pulse">
+        Dummy Payment Page
+      </p>
+
       {/*  CONTAINER */}
       <div className=" w-10/12 mx-auto flex justify-between h-screen">
         {/*  LEFT SIDE SHIPPING ADDRESS */}

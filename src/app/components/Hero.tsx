@@ -13,10 +13,11 @@ const Body = () => {
         <div className=" w-6/12">
           <h1 className="text-2xl font-bold py-8">NIKE XBA1 </h1>
           <p className="text-sm font-semibold opacity-70 leading-7">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit,
-            cupiditate sunt est inventore eaque consequatur distinctio fuga
-            voluptates minus id adipisci fugiat. Explicabo, impedit ea. Odit
-            nobis quod id eaque.
+            Shoomia is your go-to destination for premium sneakers. Browse a
+            carefully curated collection of top brands and iconic styles,
+            designed for everyday wear and standout moments. With a smooth
+            shopping experience and secure checkout, finding your perfect pair
+            has never been easier.
           </p>
           <Link href={"../sneakers/"}>
             <button className="bg-gray-500 px-8 py-3 rounded-md text-white my-20  ">

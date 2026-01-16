@@ -5,6 +5,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import appStore from "../utils/store";
 import { toggleCartPage } from "../utils/cartSlice";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type StoreObj = {
   user: string;
@@ -37,10 +38,11 @@ const Page = () => {
   });
 
   // HANDLE CHECKOUT
+
   const handleCheckOut = () => {
     if (!userToken) {
-      alert("sign up first");
-      router.push("/signup");
+      toast.error("Please  log in first");
+      router.push("/signin");
     } else {
       router.push("/checkout");
     }
